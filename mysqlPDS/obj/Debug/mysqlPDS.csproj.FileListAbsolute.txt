@@ -1,0 +1,5 @@
+D:\Projetos VisualStudio\PDS\mysqlPDS\bin\Debug\mysqlPDS.dll
+D:\Projetos VisualStudio\PDS\mysqlPDS\bin\Debug\mysqlPDS.pdb
+D:\Projetos VisualStudio\PDS\mysqlPDS\obj\Debug\mysqlPDS.dll
+D:\Projetos VisualStudio\PDS\mysqlPDS\obj\Debug\mysqlPDS.pdb
+D:\Projetos VisualStudio\PDS\mysqlPDS\obj\Debug\mysqlPDS.csprojResolveAssemblyReference.cache

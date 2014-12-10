@@ -1,0 +1,63 @@
+﻿@model RedeMusica.Models.Bandas
+@{
+    ViewBag.Title = "busca";
+    string foto = Model.foto;
+}
+
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col col-sm-3">
+            <div>
+                <div id="sidebar">
+                    <ul class="nav nav-stacked">
+                        <li><h3 class="highlight">@Html.DisplayFor(atual => Model.nome)  </h3></li>
+                        <li><img src=@Url.Content(foto) style="width:200px;height:200px" /> </li>
+                        <li>@Html.DisplayFor(atual => Model.cidadeNatal)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col col-sm-7">
+            <div id="content">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a href="#orange" data-toggle="tab">Usuários</a></li>
+                    
+                </ul>
+                <div id="my-tab-content" class="tab-content">
+
+                    <div class="tab-pane active" id="orange">
+
+                        @{
+                            RedeMusica.Models.Bandas banda = new RedeMusica.Models.Bandas();
+                            List<RedeMusica.Models.Usuarios> listaUsers = new List<RedeMusica.Models.Usuarios>();
+                            listaUsers = banda.buscaUser(Convert.ToInt32(Session["idBanda"]),Session["buscando"].ToString(),Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+                        @foreach (var item in listaUsers)
+                        {
+                            string fotoPosts = item.fotoPerfil.ToString();
+                            string nome = item.nome;
+                            <br />
+                            <div class="media">
+                                <a class="media-left pull-left" href="#">
+                                    <img src=@Url.Content(fotoPosts) style="width:128px;height:128px">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">@Html.ActionLink(nome, "Perfil", "Usuarios", new { id = item.id }, null)</h4>
+                                     @Html.ActionLink("Adicionar a Banda","AdicionaIntegrante", new{id=item.id})
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

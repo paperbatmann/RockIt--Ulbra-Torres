@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - RockIt</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("RockIt", "PerfilIni", "Usuarios", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                  <li style="margin-top: 9px">                  
+                      @using (Html.BeginForm("Buscar", "Home", FormMethod.Post))
+                        {
+                             <div>
+                                    <input type="text" class="form-control" placeholder="Busque músicas, usuários ou bandas" style="width:700px" name="buscando" id="buscando"> 
+                             </div>
+    
+                         }
+                    </li>            
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configurações <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Configurações", "Config", "Usuarios")</li>
+                            <li>@Html.ActionLink("Sair", "Sair", "Usuarios")</li>
+                           </ul>
+                        </li> 
+                        </ul>
+</div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript" src="~/Galeria/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="~/Galeria/modernizr.min.js"></script>
+
+    <!-- Lightbox -->
+    <link rel='stylesheet' type='text/css' href='~/Galeria/photogallery/jquery.lightbox.css'>
+    <script src='~/Galeria/photogallery/jquery.lightbox.js'></script>
+    <script>
+        // Initiate Lightbox
+      $(function() {
+        $('.grid a').lightbox();
+      });
+    </script>
+
+    
+</body>
+</html>

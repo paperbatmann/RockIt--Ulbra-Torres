@@ -1,0 +1,377 @@
+﻿@model RedeMusica.Models.Usuarios
+@{
+    ViewBag.Title = "PerfilIni";
+    string foto = Model.fotoPerfil;
+}
+
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col col-sm-3">
+            <div>
+                <div id="sidebar">
+                    <ul class="nav nav-stacked">
+                        <li><h3 class="highlight">@Html.DisplayFor(atual => Model.nome) @Html.DisplayFor(atual => Model.sobreNome) </h3></li>
+                        <li><img src=@Url.Content(foto) style="width:200px;height:200px" /> </li>
+                        <li>@Html.DisplayFor(atual => Model.email)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col col-sm-7">
+            <div id="content">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a href="#red" data-toggle="tab">Músicas usuários</a></li>
+                    <li><a href="#orange" data-toggle="tab">Músicas Bandas</a></li>
+                    <li><a href="#yellow" data-toggle="tab">Postagens Usuários</a></li>
+                    <li><a href="#TheEnglishRiviera" data-toggle="tab">Postagens Bandas</a></li>
+                    <li><a href="#green" data-toggle="tab">Galeria</a></li>
+                    <li><a href="#blue" data-toggle="tab">Equipamentos</a></li>
+                    <li><a href="#purple" data-toggle="tab">Suas músicas</a></li>
+                    <li><a href="#gray" data-toggle="tab">Suas Postagens</a></li>
+                    <li><a href="#dancefloors" data-toggle="tab">Suas Bandas</a></li>
+                    <li><a href="#RadioLadio" data-toggle="tab">Seguidores</a></li>
+                </ul>
+                <div id="my-tab-content" class="tab-content">
+                    
+                    <div class="tab-pane active" id="red">
+
+
+                        <br />
+                        @{
+                            RedeMusica.Models.Musicas Musica = new RedeMusica.Models.Musicas();
+                            List<RedeMusica.Models.Musicas> listaM = new List<RedeMusica.Models.Musicas>();
+                            listaM = Musica.MusicasFollowing(Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+                        <table style="table-layout: fixed; width: 400px">
+
+
+                            @foreach (var item in listaM)
+                            {
+                                string fotoM = item.imageMusica.ToString();
+                                string musica = item.arquivoMusica.ToString();
+                                string data = item.dataPost.ToShortDateString();
+                                string nome = item.usuarioNome;
+
+                                <tr>
+                                    <th rowspan="4"> <img src=@Url.Content(fotoM) style="width:128px;height:128px" /> </th>
+                                    <th colspan="2">@Html.DisplayFor(modelItem => item.nome)</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">@Html.ActionLink(nome, "Perfil", "Usuarios", new { id = item.usuarioId }, null)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <audio controls id="audioplayer">
+                                            <source src=@Url.Content(musica) type="audio/mp3" />
+                                            sem audio
+                                        </audio>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.estiloNome)</td>
+                                    <td>@data</td>
+                                </tr>
+                                <tr>
+                                    <td><br /></td>
+                                </tr>
+
+                            }
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="orange">
+                        <br />
+                        @{
+                            RedeMusica.Models.Musicas MusicaBanda = new RedeMusica.Models.Musicas();
+                            List<RedeMusica.Models.Musicas> listaMBanda = new List<RedeMusica.Models.Musicas>();
+                            listaMBanda = Musica.MusicasFollowingBanda(Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+                        <table style="table-layout: fixed; width: 400px">
+
+
+                            @foreach (var item in listaMBanda)
+                            {
+                                string fotoM = item.imageMusica.ToString();
+                                string musica = item.arquivoMusica.ToString();
+                                string nome = item.usuarioNome.ToString();
+                                string data = item.dataPost.ToShortDateString();
+
+
+                                <tr>
+                                    <th rowspan="4"> <img src=@Url.Content(fotoM) style="width:128px;height:128px" /> </th>
+                                    <th colspan="2">@Html.DisplayFor(modelItem => item.nome)</th>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2">@Html.ActionLink(nome, "Perfil", "Bandas", new { id = item.usuarioId}, null) </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <audio controls id="audioplayer">
+                                            <source src=@Url.Content(musica) type="audio/mp3" />
+                                            sem audio
+                                        </audio>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> @Html.DisplayFor(modelItem => item.estiloNome)</td>
+                                    <td>@data</td>
+                                </tr>
+
+                            }
+
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="yellow">
+
+                        @{
+                            RedeMusica.Models.Posts posts = new RedeMusica.Models.Posts();
+                            List<RedeMusica.Models.Posts> listaPostsUser = new List<RedeMusica.Models.Posts>();
+                            listaPostsUser = posts.PostagensFollowing(Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+
+                        @foreach (var item in listaPostsUser)
+                        {
+                            string fotoPosts = item.imagem.ToString();
+                            string nome = item.nome;
+                            <br />
+                            <div class="media">
+                                <a class="media-left pull-left" href="#">
+                                    <img src=@Url.Content(fotoPosts) style="width:128px;height:128px">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">@Html.ActionLink(nome, "Perfil", "Usuarios", new { id = item.usuarioId }, null)</h4>
+                                    @item.texto
+                                </div>
+                            </div>
+                        }
+
+                     </div>
+
+                    <div class="tab-pane" id="TheEnglishRiviera">
+                        <br />
+                        @{
+                            RedeMusica.Models.Posts postsBanda = new RedeMusica.Models.Posts();
+                            List<RedeMusica.Models.Posts> listaPostsBanda = new List<RedeMusica.Models.Posts>();
+                            listaPostsBanda = posts.PostagensFollowingBandas(Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+
+                        @foreach (var item in listaPostsBanda)
+                        {
+                            string fotoPosts = item.imagem.ToString();
+                            string nome = item.nome;
+                            <br />
+                            <div class="media">
+                                <a class="media-left pull-left" href="#">
+                                    <img src=@Url.Content(fotoPosts) style="width:128px;height:128px">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">@Html.ActionLink(nome, "Perfil", "Bandas", new { id = item.usuarioId }, null)</h4>
+                                    @item.texto
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="tab-pane" id="green">
+                       <br />
+                        @Html.ActionLink("Deletar", "DeleteFoto", "Galeria")
+                        <p>@Html.ActionLink("Adicionar nova Foto", "AdicinarFoto", "Galeria")</p>
+                        <br />
+                         <div class="clearfix">
+                             <ul class="grid list-unstyled">
+
+                                 @{
+                                     RedeMusica.Models.Galeria fotoUser = new RedeMusica.Models.Galeria();
+                                     List<RedeMusica.Models.Galeria> listaFoto = new List<RedeMusica.Models.Galeria>();
+                                     listaFoto = fotoUser.getUserFotos(Convert.ToInt32(Session["idUsuario"]));
+                                 }
+                                 @foreach (var item in listaFoto)
+                                 {
+                                     string fotoG = item.arquivoFoto.ToString();
+                                     string thumb = item.thumbnail.ToString();
+
+                                    <li class="col-sm-3">
+                                        <a href=@Url.Content(fotoG) data-caption="@item.descricao">
+                                            <img style="width: 100%" src=@Url.Content(thumb)>
+
+                                        </a>
+                                    </li>
+                                 }
+                             </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="blue">
+                        <br />
+                        @Html.ActionLink("Deletar", "DeleteEquip", "Equipamentos")
+                        <p>@Html.ActionLink("Adicionar novo Equipamento", "AdicinarEquip", "Equipamentos")</p>
+                        <br />
+                        <div class="clearfix">
+                            <ul class="grid list-unstyled" >
+
+                                @{
+                                    RedeMusica.Models.Equipamentos equip = new RedeMusica.Models.Equipamentos();
+                                    List<RedeMusica.Models.Equipamentos> listaEquips = new List<RedeMusica.Models.Equipamentos>();
+                                    listaEquips = equip.getUserEquips(Convert.ToInt32(Session["idUsuario"]));
+                                }
+                                @foreach (var item in listaEquips)
+                                {
+                                    string fotoG = item.arquivoFoto.ToString();
+                                    string thumb = item.thumbnail.ToString();
+                                    
+                                    <li class="col-sm-3">
+                                        <a href=@Url.Content(fotoG)  data-caption="@item.descricao">
+                                            <img style="width: 100%" src=@Url.Content(thumb)>
+                                        </a>
+                                        
+                                    </li>
+                               
+                                }
+                            </ul>
+                        </div>
+                    
+                    </div>
+
+                    <div class="tab-pane" id="purple">
+                        <br />
+                        <p>@Html.ActionLink("Adicionar nova música", "MusicaUsuario", "Musicas")</p>
+                        <br />
+                        @{
+                            RedeMusica.Models.Musicas MusicaUser = new RedeMusica.Models.Musicas();
+                            List<RedeMusica.Models.Musicas> listaMProprias = new List<RedeMusica.Models.Musicas>();
+                            listaMProprias = MusicaUser.Proprias(Session["idUsuario"].ToString());
+                        }
+
+                        <table style="table-layout: fixed; width: 400px">
+
+
+                            @foreach (var item in listaMProprias)
+                            {
+                                string fotoM = item.imageMusica.ToString();
+                                string musica = item.arquivoMusica.ToString();
+                                string data = item.dataPost.ToShortDateString();
+                                string nome = item.usuarioNome;
+                                
+
+                                <tr>
+                                    <th rowspan="4"> <img src=@Url.Content(fotoM) style="width:128px;height:128px" /> </th>
+                                    <th colspan="2">@Html.DisplayFor(modelItem => item.nome)  @Html.ActionLink("Deletar", "DeleteMusica", "Musicas", new { idM = item.id },null)</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">@Html.DisplayFor(modelItem => item.usuarioNome)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <audio controls id="audioplayer">
+                                            <source src=@Url.Content(musica) type="audio/mp3" />
+                                            sem audio
+                                        </audio>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> @Html.DisplayFor(modelItem => item.estiloNome)</td>
+                                    <td>@data</td>
+                                </tr>
+                                <tr>
+                                    <td><br /></td>
+                                </tr>
+
+                            }
+                        </table>
+
+                    </div>
+
+                    <div class="tab-pane" id="gray">
+                        <br />
+                        @Html.ActionLink("Criar novo Post","CriarPost","Posts")
+                        <br />
+                        @{
+                            RedeMusica.Models.Posts postsUser = new RedeMusica.Models.Posts();
+                            List<RedeMusica.Models.Posts> listaPostsProprios = new List<RedeMusica.Models.Posts>();
+                            listaPostsProprios = postsUser.getPosts(Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+
+                        @foreach (var item in listaPostsProprios)
+                        {
+                            string fotoPosts = item.imagem.ToString();
+                            string nome = item.nome;
+                            <br />
+                            <div class="media">
+                                <a class="media-left pull-left" href="#">
+                                    <img src=@Url.Content(fotoPosts) style="width:128px;height:128px">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">@Html.DisplayFor(modelItem => item.nome)</h4>
+                                    @item.texto @Html.ActionLink("Deletar", "Delete", "Posts", new { idPosts = item.idPost }, null)
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+
+                    <div class="tab-pane" id="dancefloors">
+                        <br />
+                        @Html.ActionLink("Criar nova Banda", "Criar", "Bandas")
+                        <br />
+                        @{
+                            RedeMusica.Models.Bandas suasBandas = new RedeMusica.Models.Bandas();
+                            List<RedeMusica.Models.Bandas> listaSuasBandas = new List<RedeMusica.Models.Bandas>();
+                            listaSuasBandas = suasBandas.BandasUser(Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+
+                        @foreach (var item in listaSuasBandas)
+                        {
+                            string fotoBanda = item.foto.ToString();
+                            string nome = item.nome;
+                            <br />
+                            <div class="media">
+                                <a class="media-left pull-left" href="#">
+                                    <img src=@Url.Content(fotoBanda) style="width:128px;height:128px">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">@Html.ActionLink(nome, "Perfil", "Bandas", new { id = item.id }, null)</h4>
+                                    @item.cidadeNatal
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="tab-pane" id="RadioLadio">
+                        @{
+                            RedeMusica.Models.Usuarios seguidores = new RedeMusica.Models.Usuarios();
+                            List<RedeMusica.Models.Usuarios> listaseguidores = new List<RedeMusica.Models.Usuarios>();
+                            listaseguidores = seguidores.PegaSeguidores(Convert.ToInt32(Session["idUsuario"]));
+                        }
+
+                        @foreach (var item in listaseguidores)
+                        {
+                            string fotoPosts = item.fotoPerfil.ToString();
+                            string nome = item.nome;
+                            <br />
+                            <div class="media">
+                                <a class="media-left pull-left" href="#">
+                                    <img src=@Url.Content(fotoPosts) style="width:128px;height:128px">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">@Html.ActionLink(nome, "Perfil", "Usuarios", new { id = item.id }, null)</h4>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

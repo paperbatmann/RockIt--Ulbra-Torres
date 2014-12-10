@@ -1,0 +1,20 @@
+﻿@model RedeMusica.Models.Usuarios
+@{
+    ViewBag.Title = "AtualizarFoto";
+}
+
+
+@{
+    if (Session["idUsuario"] != null)
+    {
+<h2>AtualizarFoto</h2>
+
+    using (Html.BeginForm("AtualizarFoto", "Usuarios", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <input type="submit" value="OK" />
+}
+    
+}
+
+}

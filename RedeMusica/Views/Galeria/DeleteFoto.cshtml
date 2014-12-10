@@ -1,0 +1,37 @@
+﻿@model IEnumerable<RedeMusica.Models.Galeria>
+
+@{
+    ViewBag.Title = "DeleteFoto";
+}
+
+<h2>Deletar Foto</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Foto
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descricao)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        string thumb = item.thumbnail.ToString();
+        <tr>
+            <td>
+                <img style="width: 30%" src=@Url.Content(thumb)>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.descricao)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "DeleteFotos", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>

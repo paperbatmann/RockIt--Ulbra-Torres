@@ -1,0 +1,54 @@
+﻿@model IEnumerable<RedeMusica.Models.Musicas>
+
+@{
+    ViewBag.Title = "Proprias";
+}
+
+<h2>Proprias</h2>
+
+<p>
+    @Html.ActionLink("Create New", "MusicaUsuario","Musicas")
+</p>
+<table class="tg" style="undefined;table-layout: fixed; width: 330px">
+
+
+    @foreach (var item in Model)
+    {
+        string foto = item.imageMusica.ToString();
+        string musica = item.arquivoMusica.ToString();
+
+
+        <colgroup>
+            <col style="width: 119px">
+            <col style="width: 106px">
+            <col style="width: 105px">
+        </colgroup>
+        <tr>
+            <th class="tg-031e" rowspan="4"><img src=@Url.Content(foto) style="width:128px;height:128px" /></th>
+            <th class="tg-031e" colspan="2">@Html.DisplayFor(modelItem => item.nome)</th>
+        </tr>
+        <tr>
+            <td class="tg-031e" colspan="2">@Html.DisplayFor(modelItem => item.usuarioNome)</td>
+        </tr>
+        <tr>
+            <td class="tg-031e" colspan="2">
+                <audio controls id="audioplayer">
+                    <source src=@Url.Content(musica) type="audio/mp3" />
+                    sem audio
+                </audio>
+            </td>
+        </tr>
+        <tr>
+            <td class="tg-031e">Ouvida @Html.DisplayFor(modelItem => item.nOuvida)</td>
+            <td class="tg-031e">@Html.DisplayFor(modelItem => item.dataPost)</td>
+        </tr>
+  
+
+
+
+
+
+    
+}
+
+</table>

@@ -1,0 +1,73 @@
+﻿@model RedeMusica.Models.Bandas
+@{
+    ViewBag.Title = "BuscandoUsers";
+    string foto = Model.foto;
+}
+
+<h2>Perfil Banda</h2>
+<div class="col col-sm-3">
+    <div class="row">
+        <div>
+            <div id="sidebar">
+                <ul class="nav nav-stacked">
+                    <li><h3 class="highlight">@Html.DisplayFor(atual => Model.nome) </h3></li>
+                    <li><img src=@Url.Content(foto) style="width:128px;height:128px" /> </li>
+                    <li>@Html.DisplayFor(atual => Model.cidadeNatal)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col col-sm-9">
+    <div class="container">
+        <div id="content">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <li class="active"><a href="#red" data-toggle="tab">Usuários</a></li>
+            </ul>
+            <div id="my-tab-content" class="tab-content">
+                <div class="tab-pane active" id="red">
+                    <h1>Musicas</h1>
+                    <br />
+                    @{
+                        RedeMusica.Models.Usuarios user = new RedeMusica.Models.Usuarios();
+                        List<RedeMusica.Models.Usuarios> listaM = new List<RedeMusica.Models.Usuarios>();
+                        listaM = RedeMusica.Models.Usuarios.BuscaUser(Session["buscando"].ToString());
+                    }
+
+                    <p>
+                        @Html.ActionLink("Create New", "MusicaUsuario", "Musicas")
+                    </p>
+                    <table style="table-layout: fixed; width: 400px">
+
+
+                        @foreach (var item in listaM)
+                        {
+                            string fotoM = item.imageMusica.ToString();
+                            string musica = item.arquivoMusica.ToString();
+
+
+
+                            <tr>
+                                <th rowspan="4"> <img src=@Url.Content(fotoM) style="width:128px;height:128px" /> </th>
+                                <th colspan="2">@Html.DisplayFor(modelItem => item.nome)</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">@Html.DisplayFor(modelItem => item.usuarioNome)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <audio controls id="audioplayer">
+                                        <source src=@Url.Content(musica) type="audio/mp3" />
+                                        sem audio
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ouvida @Html.DisplayFor(modelItem => item.nOuvida)</td>
+                                <td>@Html.DisplayFor(modelItem => item.dataPost)</td>
+                            </tr>
+
+                        }
+
+                    </table>
+                </div>

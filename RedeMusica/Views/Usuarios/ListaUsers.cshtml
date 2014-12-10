@@ -1,0 +1,40 @@
+﻿@model IEnumerable<RedeMusica.Models.Usuarios>
+
+@{
+    ViewBag.Title = "ListaUsers";
+}
+
+<h2>ListaUsers</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+
+
+@foreach (var item in Model) {
+     string foto=  item.fotoPerfil.ToString();
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sobreNome)
+        </td>
+       
+        
+        <td>
+            <img src=@Url.Content(foto) style="width:128px;height:128px" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            
+            @Html.ActionLink("Perfil", "Perfil", new { id=item.id }) 
+            
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,68 @@
+﻿@model RedeMusica.Models.Bandas
+
+@{
+    ViewBag.Title = "Config";
+}
+
+<h2>Config Bandas</h2>
+<br />
+<p>@Html.ActionLink("Deletar Banda", "DeleteBanda", "Bandas")</p>
+<br />
+@using (Html.BeginForm("ConfigBanda", "Bandas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nome, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cidadeNatal, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cidadeNatal, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.cidadeNatal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       
+        <div style="margin-left:2%">
+            Imagem: <input type="file" name="fileImagem" />
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Editar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@if (ViewBag.Imagem != null)
+{
+    <script type="text/javascript">
+
+
+
+        alert('@ViewBag.Imagem');
+
+
+
+    </script>
+}

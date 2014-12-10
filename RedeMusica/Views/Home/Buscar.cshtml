@@ -1,0 +1,183 @@
+﻿@model RedeMusica.Models.Usuarios
+@{
+    ViewBag.Title = "busca";
+    string foto = Model.fotoPerfil;
+}
+
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col col-sm-3">
+            <div>
+                <div id="sidebar">
+                    <ul class="nav nav-stacked">
+                        <li><h3 class="highlight">@Html.DisplayFor(atual => Model.nome) @Html.DisplayFor(atual => Model.sobreNome) </h3></li>
+                        <li><img src=@Url.Content(foto) style="width:200px;height:200px" /> </li>
+                        <li>@Html.DisplayFor(atual => Model.email)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col col-sm-7">
+            <div id="content">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a href="#red" data-toggle="tab">Músicas usuários</a></li>
+                    <li><a href="#purpleRain" data-toggle="tab">Músicas Bandas</a></li>
+                    <li><a href="#orange" data-toggle="tab">Usuários</a></li>
+                    <li><a href="#hotline" data-toggle="tab"> Bandas</a></li>
+                  
+                </ul>
+                <div id="my-tab-content" class="tab-content">
+                    
+                    <div class="tab-pane active" id="red">
+
+                        <br />
+                        @{
+                            RedeMusica.Models.Musicas Musica = new RedeMusica.Models.Musicas();
+                            List<RedeMusica.Models.Musicas> listaM = new List<RedeMusica.Models.Musicas>();
+                            listaM = Musica.Busca(Session["buscando"].ToString());
+                        }
+
+                        <table style="table-layout: fixed; width: 400px">
+
+
+                            @foreach (var item in listaM)
+                            {
+                                string fotoM = item.imageMusica.ToString();
+                                string musica = item.arquivoMusica.ToString();
+                                string nome = item.usuarioNome.ToString();
+                                string data = item.dataPost.ToShortDateString();
+
+                                <tr>
+                                    <th rowspan="4"> <img src=@Url.Content(fotoM) style="width:128px;height:128px" /> </th>
+                                    <th colspan="2">@Html.DisplayFor(modelItem => item.nome)</th>
+                                </tr>
+                                <tr>
+                                    @if (item.bandaId == null)
+                                    {
+                                        <td colspan="2">@Html.ActionLink(nome, "Perfil", "Usuarios", new { id = item.usuarioId }, null) </td>
+                                    }
+                                    else
+                                    {
+                                        <td colspan="2">@Html.ActionLink(nome, "Perfil", "Bandas", new { id = item.bandaId }, null)</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <audio controls id="audioplayer">
+                                            <source src=@Url.Content(musica) type="audio/mp3" />
+                                            sem audio
+                                        </audio>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> @Html.DisplayFor(modelItem => item.estiloNome)</td>
+                                    <td>@data</td>
+                                </tr>
+
+                            }
+
+                        </table>
+
+
+
+                    </div>
+                    <div class="tab-pane" id="purpleRain">
+                        <br />
+                        @{
+                            RedeMusica.Models.Musicas MusicaBanda = new RedeMusica.Models.Musicas();
+                            List<RedeMusica.Models.Musicas> listaMBanda = new List<RedeMusica.Models.Musicas>();
+                            listaMBanda = Musica.BuscaMusicaBanda(Session["buscando"].ToString());
+                        }
+
+                        <table style="table-layout: fixed; width: 400px">
+
+
+                            @foreach (var item in listaMBanda)
+                            {
+                                string fotoM = item.imageMusica.ToString();
+                                string musica = item.arquivoMusica.ToString();
+                                string nome = item.usuarioNome.ToString();
+                                string data = item.dataPost.ToShortDateString();
+
+
+                                <tr>
+                                    <th rowspan="4"> <img src=@Url.Content(fotoM) style="width:128px;height:128px" /> </th>
+                                    <th colspan="2">@Html.DisplayFor(modelItem => item.nome)</th>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2">@Html.ActionLink(nome, "Perfil", "Bandas", new { id = item.usuarioId }, null) </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <audio controls id="audioplayer">
+                                            <source src=@Url.Content(musica) type="audio/mp3" />
+                                            sem audio
+                                        </audio>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> @Html.DisplayFor(modelItem => item.estiloNome)</td>
+                                    <td>@data</td>
+                                </tr>
+
+                            }
+
+                        </table>
+
+                    </div>
+                    <div class="tab-pane" id="orange">
+                        @{
+                            RedeMusica.Models.Usuarios user = new RedeMusica.Models.Usuarios();
+                            List<RedeMusica.Models.Usuarios> listaUsers = new List<RedeMusica.Models.Usuarios>();
+                            listaUsers = RedeMusica.Models.Usuarios.BuscaUser(Session["buscando"].ToString());
+                        }
+                        
+                            @foreach (var item in listaUsers)
+                            {
+                                string fotoPosts = item.fotoPerfil.ToString();
+                                string nome = item.nome;
+                                <br />
+                                <div class="media">
+                                    <a class="media-left pull-left" href="#">
+                                        <img src=@Url.Content(fotoPosts) style="width:128px;height:128px">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">@Html.ActionLink(nome, "Perfil", "Usuarios", new { id = item.id }, null)</h4>
+                                       
+                                    </div>
+                                </div>
+                            }
+                        
+                    </div>
+                    <div id="hotline" class="tab-pane">
+                    @{
+                        RedeMusica.Models.Bandas suasBandas = new RedeMusica.Models.Bandas();
+                        List<RedeMusica.Models.Bandas> listaSuasBandas = new List<RedeMusica.Models.Bandas>();
+                        listaSuasBandas = suasBandas.Busca(Session["buscando"].ToString());
+                    }
+
+
+                    @foreach (var item in listaSuasBandas)
+                    {
+                        string fotoBanda = item.foto.ToString();
+                        string nome = item.nome;
+                        <br />
+                        <div class="media">
+                            <a class="media-left pull-left" href="#">
+                                <img src=@Url.Content(fotoBanda) style="width:128px;height:128px">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">@Html.ActionLink(nome, "Perfil", "Bandas", new { id = item.id }, null)</h4>
+                                @item.cidadeNatal
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
